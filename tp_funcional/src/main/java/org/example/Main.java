@@ -1,11 +1,8 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
         List<Alumno> alumnos = new ArrayList<>();
@@ -23,6 +20,8 @@ public class Main {
         alumnos.add(alumno4);
         alumnos.add(alumno5);
 
+        System.out.println("------------------------------------- CASO PRÁCTICO 1 -------------------------------------");
+
 
         List<String> streamAlumnos = alumnos.stream()
                 .filter(a -> a.getNota()>=7)
@@ -31,8 +30,28 @@ public class Main {
                 .sorted()
                 .collect(Collectors.toList());
 
+        System.out.println("Alumnos con nota mayor a 7, ordenados: ");
         System.out.println(streamAlumnos);
 
+        OptionalDouble promedioOpcional = alumnos.stream()
+                .mapToInt(a -> a.getNota())
+                .average();
 
+        double promedioGeneral = promedioOpcional.orElse(0.0);
+        System.out.println("Promedio General de notas: "+ promedioGeneral);
+
+        Map<String, List<Alumno>> alumPorCurso = alumnos.stream()
+                .collect(Collectors.groupingBy(a -> a.getCurso()));
+
+        System.out.println("Alumnos Ordenador por curso: "+alumPorCurso);
+
+        List<Alumno> mejoresAlum = alumnos.stream()
+                .sorted(Comparator.comparing(Alumno::getNota).reversed())
+                .limit(3)
+                .collect(Collectors.toList());
+
+        System.out.println("Mejores alumnos: "+ mejoresAlum);
+
+        System.out.println("------------------------------------- CASO PRÁCTICO 2 -------------------------------------");
     }
 }
