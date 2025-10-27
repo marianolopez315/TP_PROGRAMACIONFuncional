@@ -10,9 +10,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 
-public class Producto {
-    private String nombre;
-    private String categoria;
+public class Libro {
+    private String titulo;
+    private String autor;
+    private int paginas;
     private double precio;
-    private int stock;
 }

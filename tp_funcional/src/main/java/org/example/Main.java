@@ -5,6 +5,9 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
+
+        System.out.println("------------------------------------- CASO PRÁCTICO 1 -------------------------------------");
+
         List<Alumno> alumnos = new ArrayList<>();
 
         Alumno alumno1 = new Alumno("Juan", 8, "2k7");
@@ -20,11 +23,9 @@ public class Main {
         alumnos.add(alumno4);
         alumnos.add(alumno5);
 
-        System.out.println("------------------------------------- CASO PRÁCTICO 1 -------------------------------------");
-
 
         List<String> streamAlumnos = alumnos.stream()
-                .filter(a -> a.getNota()>=7)
+                .filter(a -> a.getNota() >= 7)
                 .map(a -> a.getNombre())
                 .map(String::toUpperCase)
                 .sorted()
@@ -38,20 +39,94 @@ public class Main {
                 .average();
 
         double promedioGeneral = promedioOpcional.orElse(0.0);
-        System.out.println("Promedio General de notas: "+ promedioGeneral);
+        System.out.println("Promedio General de notas: " + promedioGeneral);
 
         Map<String, List<Alumno>> alumPorCurso = alumnos.stream()
                 .collect(Collectors.groupingBy(a -> a.getCurso()));
 
-        System.out.println("Alumnos Ordenador por curso: "+alumPorCurso);
+        System.out.println("Alumnos Ordenador por curso: " + alumPorCurso);
 
         List<Alumno> mejoresAlum = alumnos.stream()
                 .sorted(Comparator.comparing(Alumno::getNota).reversed())
                 .limit(3)
                 .collect(Collectors.toList());
 
-        System.out.println("Mejores alumnos: "+ mejoresAlum);
+        System.out.println("Mejores alumnos: " + mejoresAlum);
 
         System.out.println("------------------------------------- CASO PRÁCTICO 2 -------------------------------------");
+
+        List<Producto> productos = new ArrayList<>();
+
+        Producto producto1 = new Producto("Carne", "alimentos", 110, 10 );
+        Producto producto2 = new Producto("Cortinas", "hogar", 30, 40 );
+        Producto producto3 = new Producto("Arroz", "alimentos", 27, 20 );
+        Producto producto4 = new Producto("Lapicera", "utiles", 10, 70 );
+
+        productos.add(producto1);
+        productos.add(producto2);
+        productos.add(producto3);
+        productos.add(producto4);
+
+        List<Producto> streamProductosCaros = productos.stream()
+                .filter(p -> p.getPrecio()>100)
+                .sorted(Comparator.comparing(Producto::getPrecio).reversed())
+                .collect(Collectors.toList());
+
+        System.out.println("Productos más caros: "+streamProductosCaros);
+
+        Map<String, Integer> producPorCat = productos.stream()
+                .collect(Collectors.groupingBy(p -> p.getCategoria(), Collectors.summingInt(p -> p.getStock())));
+
+        System.out.println("Stock por categoria: "+producPorCat);
+
+        String reporteDeProductos = productos.stream()
+                .map(p -> p.getNombre()+ ":"+ p.getPrecio())
+                .collect(Collectors.joining(";"));
+
+        System.out.println("Reporte de productos: "+reporteDeProductos);
+
+        OptionalDouble promedioGeneralOpt = productos.stream()
+                .mapToDouble(Producto::getPrecio)
+                .average();
+
+        double promedioGeneralProd = promedioGeneralOpt.orElse(0.0);
+        System.out.println("Promedio General: " + promedioGeneral);
+
+        Map<String, Double> promedioPorCategoria = productos.stream()
+                .collect(Collectors.groupingBy(Producto::getCategoria, Collectors.averagingDouble(Producto::getPrecio)));
+
+        System.out.println("Promedio por Categoría: " + promedioPorCategoria);
+
+        System.out.println("------------------------------------- CASO PRÁCTICO 3 -------------------------------------");
+
+        List<Libro> libros = new ArrayList<>();
+
+        Libro libro1 = new Libro("Mi Planta de Naranja Lima", "José Mauro de Vasconcelos",256, 150);
+        Libro libro2 = new Libro("Es tan dificil volver a Itaca", "Esteban Valentino",150, 110);
+        Libro libro3 = new Libro("Cien años de soledad", "Gabriel Garcia Marquez",410, 190);
+        Libro libro4 = new Libro("Cronica de una muerte anunciada", "Gabriel Garcia Marquez",170, 170);
+
+        libros.add(libro1);
+        libros.add(libro2);
+        libros.add(libro3);
+        libros.add(libro4);
+
+        List<String> streamLibrosLargos = libros.stream()
+                .filter(l -> l.getPaginas()>300)
+                .map(l -> l.getTitulo())
+                .sorted()
+                .collect(Collectors.toList());
+
+        System.out.println("Libros con +300 paginas: "+streamLibrosLargos);
+
+        OptionalDouble promedioGeneralOpLib = libros.stream()
+                .mapToInt(Libro::getPaginas)
+                .average();
+
+        double promedioGeneralLib = promedioGeneralOpLib.orElse(0.0);
+
+        System.out.println("Promedio de paginas de libros: "+promedioGeneralLib);
+
     }
+
 }
