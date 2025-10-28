@@ -104,7 +104,7 @@ public class Main {
         Libro libro1 = new Libro("Mi Planta de Naranja Lima", "José Mauro de Vasconcelos",256, 150);
         Libro libro2 = new Libro("Es tan dificil volver a Itaca", "Esteban Valentino",150, 110);
         Libro libro3 = new Libro("Cien años de soledad", "Gabriel Garcia Marquez",410, 190);
-        Libro libro4 = new Libro("Cronica de una muerte anunciada", "Gabriel Garcia Marquez",170, 170);
+        Libro libro4 = new Libro("Cronica de una muerte anunciada", "Gabriel Garcia Marquez",170, 270);
 
         libros.add(libro1);
         libros.add(libro2);
@@ -126,6 +126,21 @@ public class Main {
         double promedioGeneralLib = promedioGeneralOpLib.orElse(0.0);
 
         System.out.println("Promedio de paginas de libros: "+promedioGeneralLib);
+
+        Map<String, Long> librosPorAutor = libros.stream()
+                .collect(Collectors.groupingBy(Libro::getAutor, Collectors.counting()));
+
+        System.out.println("Libros por autor: "+ librosPorAutor);
+
+        Optional<Libro> libroMasCaroOpt = libros.stream()
+                .max(Comparator.comparing(Libro::getPrecio));
+
+        if (libroMasCaroOpt.isPresent()) {
+            Libro libroMasCaro = libroMasCaroOpt.get();
+            System.out.println("El libro más caro es: " + libroMasCaro);
+        } else {
+            System.out.println("No se encontraron libros en la lista.");
+        }
 
     }
 
