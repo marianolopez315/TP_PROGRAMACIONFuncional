@@ -142,6 +142,53 @@ public class Main {
             System.out.println("No se encontraron libros en la lista.");
         }
 
+        System.out.println("------------------------------------- CASO PRÁCTICO 4 -------------------------------------");
+
+        List<Empleado> empleados = new ArrayList<>();
+
+        Empleado empleado1 = new Empleado("Lucas Garcia", "Guaymallen", 2300, 35);
+        Empleado empleado2 = new Empleado("Marcos Llorente", "Las Heras", 1600, 27);
+        Empleado empleado3 = new Empleado("Maria Colombo", "Maipu", 2700, 46);
+        Empleado empleado4 = new Empleado("Agustin Rojas", "Guaymallen", 1500, 25);
+
+        empleados.add(empleado1);
+        empleados.add(empleado2);
+        empleados.add(empleado3);
+        empleados.add(empleado4);
+
+        List<Empleado> streamEmpleadosSalarios = empleados.stream()
+                .filter(e -> e.getSalario()>2000)
+                .sorted(Comparator.comparing(Empleado::getSalario).reversed())
+                .collect(Collectors.toList());
+
+        System.out.println("Empleados con salario mas alto: "+streamEmpleadosSalarios);
+
+        OptionalDouble promedioGeneralOpSalario = empleados.stream()
+                .mapToDouble(Empleado::getSalario)
+                .average();
+
+        double promedioGeneralSalario = promedioGeneralOpSalario.orElse(0.0);
+
+        System.out.println("Salario promedio general: "+promedioGeneralSalario);
+
+        Map<String, Double> empleadoPorDepa = empleados.stream()
+                .collect(Collectors.groupingBy(Empleado::getDepartamento, Collectors.summingDouble(Empleado::getSalario)));
+
+        System.out.println("Suma salarios por departamento: "+empleadoPorDepa);
+
+        List<String> nombresMasJovenes = empleados.stream()
+                .sorted(Comparator.comparing(Empleado::getEdad))
+                .limit(2)
+                .map(Empleado::getNombre)
+                .collect(Collectors.toList());
+
+        System.out.println("Nombres de los 2 empleados mas jovenes: "+nombresMasJovenes);
+
+
+
+
+
+
     }
 
 }
